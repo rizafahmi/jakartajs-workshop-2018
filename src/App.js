@@ -1,62 +1,70 @@
 import React, { Component } from "react";
-import logo from "./logo.svg";
-import "./App.css";
+import { Layout } from "antd";
+import axios from "axios";
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import { connect } from "react-redux";
 
 import NavBar from "./components/NavBar";
-import MeetupInfo from "./components/MeetupInfo";
-import NextMeetup from "./components/NextMeetup";
+import CreateMeetup from "./components/CreateMeetup";
+import Home from "./components/Home";
+import { incrementAction } from "./redux/actions";
 
-const data = {
-  meetupInfo: {
-    name: "JakartaJS",
-    photoUrl: "",
-    location: "Jakarta",
-    about: "This is meetup for JavaScript ninjas."
-  },
-  members: [
-    { name: "Andi", email: "andi@gmail.com" },
-    { name: "Budi", email: "budi@gmail.com" },
-    { name: "Wati", email: "wati@gmail.com" }
-  ],
-  organizers: [
-    { name: "Hengki", email: "hengki@jakartajs.org" },
-    { name: "Sofian", email: "sofian@jakartajs.org" }
-  ],
-  meetups: [
-    {
-      title: "JakartaJS Workshop 2018",
-      description: "....",
-      status: "next",
-      date: new Date(),
-      location: "Hacktiv8"
-    },
-    {
-      title: "JakartaJS Meetup With Kudo",
-      description: "...",
-      status: "past",
-      date: new Date(),
-      location: "Kudo"
-    }
-  ]
-};
+import "./App.css";
+
+const { Header, Footer, Content } = Layout;
+
 class App extends Component {
   constructor(props) {
     super(props);
 
-    this.state = data;
+    this.state = {
+      meetups: []
+    };
+  }
+  componentDidMount() {
+    axios.get("http://localhost:8000/meetups").then(response => {
+      setTimeout(() => {
+        this.setState({ meetups: response.data });
+        this.props.increment();
+      }, 5000);
+    });
   }
   render() {
     return (
-      <div>
-        <NavBar />
-        <MeetupInfo info={this.state.meetupInfo} />
-        <NextMeetup meetups={this.state.meetups} addMeetup={() => this.setState({meetups: this.state.meetups.concat({title: 'another new meetup'})})} />
-        {/*<About />
-        <PastMeetups />
-        */}
-      </div>
+      <Router>
+        <Layout>
+          <Header>
+            <NavBar />
+          </Header>
+          <Content>
+            <h1>{this.props.counter}</h1>
+            <Route
+              exact
+              path="/"
+              render={() => <Home meetups={this.state.meetups} />}
+            />
+            <Route path="/create" component={CreateMeetup} />
+          </Content>
+          <Footer>&copy; 2018 JakartaJS</Footer>
+        </Layout>
+      </Router>
     );
   }
 }
 
-export default App;
+const styles = {
+  container: { backgroundColor: "mediumaquamarine", fontSize: 25 }
+};
+
+const mapStateToProps = state => {
+  return {
+    counter: state
+  };
+};
+const mapDispatchToProps = dispatch => {
+  return {
+    increment: () => dispatch(incrementAction())
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

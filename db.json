@@ -1,0 +1,35 @@
+{
+  "meetupInfo": {
+    "name": "JakartaJS",
+    "photoUrl": "",
+    "location": "Jakarta",
+    "about": "This is meetup for JavaScript ninjas."
+  },
+  "members": [
+    { "name": "Andi", "email": "andi@gmail.com" },
+    { "name": "Budi", "email": "budi@gmail.com" },
+    { "name": "Wati", "email": "wati@gmail.com" }
+  ],
+  "organizers": [
+    { "name": "Hengki", "email": "hengki@jakartajs.org" },
+    { "name": "Sofian", "email": "sofian@jakartajs.org" }
+  ],
+  "meetups": [
+    {
+      "id": 1,
+      "title": "JakartaJS Workshop 2018",
+      "description": "....",
+      "status": "next",
+      "date": "3 Maret 2018",
+      "location": "Hacktiv8"
+    },
+    {
+      "id": 2,
+      "title": "JakartaJS Meetup With Kudo",
+      "description": "...",
+      "status": "past",
+      "date": "22 Februari 2018",
+      "location": "Kudo"
+    }
+  ]
+}
